@@ -6,7 +6,9 @@ public class Player : MonoBehaviour
     [SerializeField] private Camera _cam;
     [SerializeField] private LayerMask _playerLayer;
     [SerializeField] private GameObject _hand;
+    private GameObject _item;
     private float _yaw, _pitch;
+    private bool _equipped;
     public float speed = 5f, sensitivty = 10f;
 
     private void Start() {
@@ -18,8 +20,18 @@ public class Player : MonoBehaviour
     private void Update() {
         Look();
 
+        if(_item != null) {
+            _equipped = true;
+        } else {
+            _equipped = false;
+        }
+
         if(Input.GetKeyDown(KeyCode.E)) {
-            Grab();
+            CheckRay();
+        }
+
+        if(Input.GetKeyDown(KeyCode.Q) && _equipped) {
+            Drop();
         }
     }
 
@@ -41,18 +53,28 @@ public class Player : MonoBehaviour
         _rb.velocity = wish;
     }
 
-    private void Grab() {
+    private void CheckRay() {
         if(Physics.Raycast(_cam.transform.position, _cam.transform.forward, out RaycastHit hit, 2.5f, ~_playerLayer)) {
-            if(hit.transform.CompareTag("Interactable")) {
-                Debug.Log("Interacted");
-                hit.transform.position = _hand.transform.position;
-                hit.transform.rotation = _hand.transform.rotation;
-                hit.transform.SetParent(_hand.transform);
-
-                hit.transform.SendMessage("disableRigidBody");
-
-                // hit.transform.gameObject.GetComponent<Rigidbody>().
+            if(!_equipped) {
+                Grab(hit);
             }
         }
+    }
+
+    private void Grab(RaycastHit hit) {
+        if(hit.transform.CompareTag("Interactable")) {
+            hit.transform.SendMessage("disableRigidBody");
+            hit.transform.position = _hand.transform.position;
+            hit.transform.rotation = _hand.transform.rotation;
+            hit.transform.SetParent(_hand.transform);
+
+            _item = hit.transform.gameObject;
+        }
+    }
+
+    private void Drop() {
+        _item.GetComponent<InteractableItem>().Drop(_rb, _cam);
+        _item.transform.SetParent(null);
+        _item = null;
     }
 }
