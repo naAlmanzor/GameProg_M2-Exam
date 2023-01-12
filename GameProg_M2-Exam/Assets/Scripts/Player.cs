@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     private GameObject _item;
     private float _yaw, _pitch;
     private bool _equipped;
-    public float speed = 5f, sensitivty = 10f;
+    public float speed = 5f, sensitivty = 10f, jump = 5f;
 
     private void Start() {
         Cursor.lockState = CursorLockMode.Locked;
@@ -20,15 +20,16 @@ public class Player : MonoBehaviour
     private void Update() {
         Look();
 
-        if(_item != null) {
-            _equipped = true;
-        } else {
-            _equipped = false;
-        }
+        // if(_item != null) {
+        //     _equipped = true;
+        // } else {
+        //     _equipped = false;
+        // }
 
-        if(Input.GetKeyDown(KeyCode.E)) {
-            CheckRay();
-        }
+        // if(Input.GetKeyDown(KeyCode.E)) {
+        //     CheckRay();
+        // }
+        CheckRay();
 
         if(Input.GetKeyDown(KeyCode.Q) && _equipped) {
             Drop();
@@ -37,6 +38,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate() {
         Move();
+        Jump();
     }
 
     private void Look() {
@@ -53,28 +55,52 @@ public class Player : MonoBehaviour
         _rb.velocity = wish;
     }
 
+    private void Jump() {
+        if(Input.GetKey(KeyCode.Space) && Grounded()) {
+            _rb.velocity = new Vector3(_rb.velocity.x, jump, _rb.velocity.y);
+        }
+    }
+
     private void CheckRay() {
         if(Physics.Raycast(_cam.transform.position, _cam.transform.forward, out RaycastHit hit, 2.5f, ~_playerLayer)) {
-            if(!_equipped) {
-                Grab(hit);
+            if(hit.transform.CompareTag("Interactable")) {
+                _item = hit.transform.gameObject;
+                _item.GetComponent<Outline>().enabled = true;
+
+                if(Input.GetKeyDown(KeyCode.E) && !_equipped) {
+                    Grab();
+                }
+            } else if(!hit.transform.CompareTag("Interactable") && !_equipped) {
+                if(_item != null) {
+                    _item.GetComponent<Outline>().enabled = false;
+                    _item = null;
+                }
             }
         }
     }
 
-    private void Grab(RaycastHit hit) {
-        if(hit.transform.CompareTag("Interactable")) {
-            hit.transform.SendMessage("disableRigidBody");
-            hit.transform.position = _hand.transform.position;
-            hit.transform.rotation = _hand.transform.rotation;
-            hit.transform.SetParent(_hand.transform);
+    private void Grab() {
+        _item.SendMessage("disableRigidBody");
+        _item.GetComponent<Outline>().enabled = false;
+        _item.transform.position = _hand.transform.position;
+        _item.transform.rotation = _hand.transform.rotation;
+        _item.transform.SetParent(_hand.transform);
 
-            _item = hit.transform.gameObject;
-        }
+        // _item = hit.transform.gameObject;
+        _equipped = true;
     }
 
     private void Drop() {
         _item.GetComponent<InteractableItem>().Drop(_rb, _cam);
+        _item.GetComponent<Outline>().enabled = false;
         _item.transform.SetParent(null);
         _item = null;
+        _equipped = false;
+    }
+
+    private bool Grounded() {
+        if(Physics.Raycast(_rb.transform.position, Vector3.down, 1 + 0.001f)) {
+            return true;
+        } else { return false; }
     }
 }
