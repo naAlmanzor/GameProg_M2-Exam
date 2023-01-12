@@ -777,6 +777,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 47297444}
     m_Modifications:
+    - target: {fileID: 6392358284391109088, guid: 8de23818999ae1242ae2f620443176b0, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6706453338545295590, guid: 8de23818999ae1242ae2f620443176b0, type: 3}
       propertyPath: m_Name
       value: Border
