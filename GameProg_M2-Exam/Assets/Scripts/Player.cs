@@ -1,4 +1,5 @@
 using UnityEngine;
+// using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -7,14 +8,20 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask _playerLayer;
     [SerializeField] private GameObject _hand;
     private GameObject _item;
+    private UI _ui;
+    private GameManager _mgr;
     private float _yaw, _pitch;
     private bool _equipped;
-    public float speed = 5f, sensitivty = 10f, jump = 5f;
+    private float _coins;
+    public float speed = 5f, sensitivty = 10f, jump = 5f, hp = 4f;
 
     private void Start() {
         Cursor.lockState = CursorLockMode.Locked;
         _rb.gameObject.GetComponent<Rigidbody>();
         _cam.gameObject.GetComponent<Camera>();
+
+        _ui = FindObjectOfType<UI>();
+        _mgr = FindObjectOfType<GameManager>();
     }
 
     private void Update() {
@@ -31,14 +38,40 @@ public class Player : MonoBehaviour
         // }
         CheckRay();
 
+        if(_item == null) {
+            _equipped = false;
+        }
+
         if(Input.GetKeyDown(KeyCode.Q) && _equipped) {
             Drop();
+        }
+
+        if(hp == 0) {
+            //Do something
+            _mgr.GameOver();
         }
     }
 
     private void FixedUpdate() {
         Move();
         Jump();
+    }
+
+    private void OnCollisionEnter(Collision other) {
+        if(other.gameObject.tag == "Obstacle") {
+            Damage();
+        }
+
+        // if(other.gameObject.tag == "coin") {
+        //     CollectCoin();
+        // }
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        if(other.gameObject.tag == "coin") {
+            CollectCoin();
+            Destroy(other.gameObject);
+        }
     }
 
     private void Look() {
@@ -67,6 +100,8 @@ public class Player : MonoBehaviour
                 _item = hit.transform.gameObject;
                 _item.GetComponent<Outline>().enabled = true;
 
+                _ui.toggleInteractPrompt(true);
+
                 if(Input.GetKeyDown(KeyCode.E) && !_equipped) {
                     Grab();
                 }
@@ -74,6 +109,8 @@ public class Player : MonoBehaviour
                 if(_item != null) {
                     _item.GetComponent<Outline>().enabled = false;
                     _item = null;
+
+                    _ui.toggleInteractPrompt(false);
                 }
             }
         }
@@ -85,6 +122,8 @@ public class Player : MonoBehaviour
         _item.transform.position = _hand.transform.position;
         _item.transform.rotation = _hand.transform.rotation;
         _item.transform.SetParent(_hand.transform);
+
+        _ui.toggleInteractPrompt(false);
 
         // _item = hit.transform.gameObject;
         _equipped = true;
@@ -103,4 +142,37 @@ public class Player : MonoBehaviour
             return true;
         } else { return false; }
     }
+
+    private void Damage() {
+        //NOTE: Half damage since it procs twice because of the quick wall stick fix I applied.
+        hp -= 1f;
+        // UI ui = FindObjectOfType<UI>();
+        _ui.Damage();
+    }
+
+    private void CollectCoin() {
+        _ui.CollectCoin();
+    }
+
+    public bool getEquippedState() {
+        return _equipped;
+    }
+
+    public GameObject getEquipped() {
+        return _item.gameObject;
+    }
+
+    // private void GameOver() {
+    //     Cursor.lockState = CursorLockMode.None;
+    //     _mgr.setGameState(0);
+    //     _mgr.LoadScene("Condition Scene");
+    //     // SceneManager.LoadScene("Condition Scene", LoadSceneMode.Single);
+    // }
+
+    // private void Win() {
+    //     Cursor.lockState = CursorLockMode.None;
+    //     _mgr.setGameState(2);
+    //     _mgr.LoadScene("Condition Scene");
+    //     // SceneManager.LoadScene("Condition Scene", LoadSceneMode.Single);
+    // }
 }
