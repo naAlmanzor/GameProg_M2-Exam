@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Door : MonoBehaviour
 {
@@ -18,6 +15,8 @@ public class Door : MonoBehaviour
         if(_player.getEquippedState() && other.gameObject.tag == "Player") {
             Debug.Log("THE DOOR IS ACTIVATED! KEY USED");
             Destroy(_player.getEquipped());
+
+            gameObject.SetActive(false);
 
             // _mgr.setGameState(1);
             // SceneManager.LoadScene("Condition Scene", LoadSceneMode.Single);
