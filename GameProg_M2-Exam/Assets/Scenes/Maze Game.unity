@@ -1733,7 +1733,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 0.6132076, g: 0.55192083, b: 0.38477513, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -2055,7 +2055,7 @@ PrefabInstance:
     - target: {fileID: 3576562221103064968, guid: e035cea71dcddf3428117d2f16d28d64, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 050545e6d75964a409d06403774583ef, type: 2}
+      objectReference: {fileID: 2100000, guid: 0594de4c0a9f3574488cd1830696b941, type: 2}
     - target: {fileID: 8303991413046619702, guid: e035cea71dcddf3428117d2f16d28d64, type: 3}
       propertyPath: m_Name
       value: Long border (Top)
@@ -4208,7 +4208,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 447696775385464216, guid: e89780dba6f7c35459221dee2dc2ff2b, type: 3}
       propertyPath: m_LocalScale.z
-      value: 3.961323
+      value: 11.348621
       objectReference: {fileID: 0}
     - target: {fileID: 447696775385464216, guid: e89780dba6f7c35459221dee2dc2ff2b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4546,7 +4546,7 @@ PrefabInstance:
     - target: {fileID: 3576562221103064968, guid: e035cea71dcddf3428117d2f16d28d64, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 050545e6d75964a409d06403774583ef, type: 2}
+      objectReference: {fileID: 2100000, guid: 0594de4c0a9f3574488cd1830696b941, type: 2}
     - target: {fileID: 8303991413046619702, guid: e035cea71dcddf3428117d2f16d28d64, type: 3}
       propertyPath: m_Name
       value: Long border (Bottom)
@@ -5152,7 +5152,7 @@ PrefabInstance:
     - target: {fileID: 3576562221103064968, guid: e035cea71dcddf3428117d2f16d28d64, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 050545e6d75964a409d06403774583ef, type: 2}
+      objectReference: {fileID: 2100000, guid: 0594de4c0a9f3574488cd1830696b941, type: 2}
     - target: {fileID: 8303991413046619702, guid: e035cea71dcddf3428117d2f16d28d64, type: 3}
       propertyPath: m_Name
       value: Long border (Left)
@@ -6289,7 +6289,7 @@ PrefabInstance:
     - target: {fileID: 3576562221103064968, guid: e035cea71dcddf3428117d2f16d28d64, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 050545e6d75964a409d06403774583ef, type: 2}
+      objectReference: {fileID: 2100000, guid: 0594de4c0a9f3574488cd1830696b941, type: 2}
     - target: {fileID: 8303991413046619702, guid: e035cea71dcddf3428117d2f16d28d64, type: 3}
       propertyPath: m_Name
       value: Long border (Right)
@@ -6457,6 +6457,30 @@ PrefabInstance:
     - target: {fileID: 7869641707234180887, guid: fa8aebbe5e69028449e66f350919157d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7869641707961832988, guid: fa8aebbe5e69028449e66f350919157d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7869641708015195419, guid: fa8aebbe5e69028449e66f350919157d, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7869641708015195419, guid: fa8aebbe5e69028449e66f350919157d, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7869641708015195419, guid: fa8aebbe5e69028449e66f350919157d, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7869641708015195419, guid: fa8aebbe5e69028449e66f350919157d, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7869641708015195419, guid: fa8aebbe5e69028449e66f350919157d, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7869641708580578707, guid: fa8aebbe5e69028449e66f350919157d, type: 3}
       propertyPath: m_AnchorMax.x
