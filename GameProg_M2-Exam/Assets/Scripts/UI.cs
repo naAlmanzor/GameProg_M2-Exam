@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class UI : MonoBehaviour
 {
     [SerializeField] private TMP_Text _hp, _objectiveText, _interactText;
-    [SerializeField] private GameObject _interact;
+    [SerializeField] private GameObject _interact, _hitScreen;
     [SerializeField] private Slider _slider;
     private float _hpNum = 100f, _maxHP = 100f, _currentCoin = 0f, _maxCoin = 3f;
     private GameManager _mgr;
@@ -35,6 +35,11 @@ public class UI : MonoBehaviour
         _hpNum -= damage;
 
         _hp.text = _hpNum.ToString()+"/"+_maxHP.ToString();
+
+        var color = _hitScreen.GetComponent<Image>().color;
+        color.a = 0.8f;
+
+        _hitScreen.GetComponent<Image>().color = color;
         setHealth();
     }
 
@@ -57,6 +62,14 @@ public class UI : MonoBehaviour
 
         if(_mgr.getObjectiveState()) {
             _objectiveText.text = "Find the key and exit";
+        }
+
+        if(_hitScreen != null) {
+            if(_hitScreen.GetComponent<Image>().color.a > 0) {
+                var color = _hitScreen.GetComponent<Image>().color;
+                color.a -= 0.01f;
+                _hitScreen.GetComponent<Image>().color = color;
+            }
         }
     }
 

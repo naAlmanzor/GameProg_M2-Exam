@@ -715,6 +715,7 @@ MonoBehaviour:
   _objectiveText: {fileID: 7869641707669469688}
   _interactText: {fileID: 7869641708254955125}
   _interact: {fileID: 7869641707961832988}
+  _hitScreen: {fileID: 7392858841547737514}
   _slider: {fileID: 1671540374658627974}
 --- !u!114 &1671540374658627974
 MonoBehaviour:
