@@ -1,5 +1,5 @@
+using System.Collections;
 using UnityEngine;
-// using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -10,10 +10,11 @@ public class Player : MonoBehaviour
     private GameObject _item;
     private UI _ui;
     private GameManager _mgr;
+    private AudioManager _aud;
     private float _yaw, _pitch;
-    private bool _equipped;
-    private float _coins;
-    public float speed = 5f, sensitivty = 10f, jump = 5f, hp = 4f;
+    private bool _equipped, _collidingObstacle = false;
+    private float _coins, _sprint = 1f;
+    public float speed = 5f, sprintMultiplier = 1.5f, sensitivty = 10f, jump = 5f, hp = 100f;
 
     private void Start() {
         Cursor.lockState = CursorLockMode.Locked;
@@ -22,32 +23,28 @@ public class Player : MonoBehaviour
 
         _ui = FindObjectOfType<UI>();
         _mgr = FindObjectOfType<GameManager>();
+        _aud = AudioManager.instance;
+
+        _ui.setHPValues(hp, hp);
     }
 
     private void Update() {
         Look();
-
-        // if(_item != null) {
-        //     _equipped = true;
-        // } else {
-        //     _equipped = false;
-        // }
-
-        // if(Input.GetKeyDown(KeyCode.E)) {
-        //     CheckRay();
-        // }
         CheckRay();
 
         if(_item == null) {
             _equipped = false;
         }
 
-        if(Input.GetKeyDown(KeyCode.Q) && _equipped) {
-            Drop();
-        }
+        // if(Input.GetKeyDown(KeyCode.Q) && _equipped) {
+        //     Drop();
+        // }
+
+        if(Input.GetKey(KeyCode.LeftShift)) {
+            _sprint = sprintMultiplier;
+        } else {_sprint = 1f;}
 
         if(hp == 0) {
-            //Do something
             _mgr.GameOver();
         }
     }
@@ -59,13 +56,30 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter(Collision other) {
         if(other.gameObject.tag == "Obstacle") {
-            Damage();
+            // Debug.Log("Collided");
+            _collidingObstacle = true;
+            StartCoroutine(Damage(1f, 0.5f));
         }
 
-        // if(other.gameObject.tag == "coin") {
-        //     CollectCoin();
-        // }
+        if(other.gameObject.tag == "Finish") {
+            _mgr.Win();
+        }
     }
+
+    private void OnCollisionExit(Collision other) {
+        if(other.gameObject.tag == "Obstacle") {
+            // Debug.Log("Exiting");
+            _collidingObstacle = false;
+        }
+    }
+
+    // private void OnCollisionStay(Collision other) {
+    //     if(other.gameObject.tag == "Obstacle") {
+    //         // Damage(0.5f);
+    //         _collidingObstacle = true;
+    //         StartCoroutine(Damage(0.5f));
+    //     } else {_collidingObstacle = false;}
+    // }
 
     private void OnTriggerEnter(Collider other) {
         if(other.gameObject.tag == "coin") {
@@ -82,7 +96,7 @@ public class Player : MonoBehaviour
     }
 
     private void Move() {
-        Vector2 axis = new Vector2(Input.GetAxis("Vertical"), Input.GetAxis("Horizontal")) * speed;
+        Vector2 axis = new Vector2(Input.GetAxis("Vertical"), Input.GetAxis("Horizontal")) * speed * _sprint;
         Vector3 forward = new Vector3(-_cam.transform.right.z, 0f, _cam.transform.right.x);
         Vector3 wish = (forward * axis.x + _cam.transform.right * axis.y + Vector3.up * _rb.velocity.y);
         _rb.velocity = wish;
@@ -127,6 +141,8 @@ public class Player : MonoBehaviour
 
         // _item = hit.transform.gameObject;
         _equipped = true;
+
+        _aud.Play("equip");
     }
 
     private void Drop() {
@@ -143,15 +159,24 @@ public class Player : MonoBehaviour
         } else { return false; }
     }
 
-    private void Damage() {
-        //NOTE: Half damage since it procs twice because of the quick wall stick fix I applied.
-        hp -= 1f;
-        // UI ui = FindObjectOfType<UI>();
-        _ui.Damage();
+    private IEnumerator Damage(float damage, float interval) {
+        // Debug.Log("Coroutine Started");
+        // Debug.Log("_collidingObstacle: " + _collidingObstacle);
+
+        while(_collidingObstacle) {
+            // Debug.Log("Taking Damage");
+            hp -= damage;
+            _ui.Damage(damage);
+            _aud.Play("lava");
+            yield return new WaitForSeconds(interval);
+        }
+
+        yield break;
     }
 
     private void CollectCoin() {
         _ui.CollectCoin();
+        _aud.Play("coin");
     }
 
     public bool getEquippedState() {
@@ -161,18 +186,4 @@ public class Player : MonoBehaviour
     public GameObject getEquipped() {
         return _item.gameObject;
     }
-
-    // private void GameOver() {
-    //     Cursor.lockState = CursorLockMode.None;
-    //     _mgr.setGameState(0);
-    //     _mgr.LoadScene("Condition Scene");
-    //     // SceneManager.LoadScene("Condition Scene", LoadSceneMode.Single);
-    // }
-
-    // private void Win() {
-    //     Cursor.lockState = CursorLockMode.None;
-    //     _mgr.setGameState(2);
-    //     _mgr.LoadScene("Condition Scene");
-    //     // SceneManager.LoadScene("Condition Scene", LoadSceneMode.Single);
-    // }
 }

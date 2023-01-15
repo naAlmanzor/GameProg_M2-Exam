@@ -139,7 +139,7 @@ MonoBehaviour:
   speed: 5
   sensitivty: 2.5
   jump: 5
-  hp: 4
+  hp: 100
 --- !u!136 &2177073006100395105
 CapsuleCollider:
   m_ObjectHideFlags: 0

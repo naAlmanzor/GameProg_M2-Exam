@@ -30,7 +30,11 @@ public class AudioManager : MonoBehaviour
 			s.source.loop = s.loop;
 
 			s.source.outputAudioMixerGroup = mixerGroup;
+
+			// DontDestroyOnLoad(s.source);
 		}
+
+		Play("theme");
 	}
 
 	private void Start() {
@@ -61,6 +65,16 @@ public class AudioManager : MonoBehaviour
 			return;
 		}
 		s.source.Stop();
+	}
+
+	public bool isPlaying(string sound) {
+		Sound s = Array.Find(sounds, item => item.name == sound);
+		if (s == null)
+		{
+			Debug.LogWarning("Sound: " + name + " not found!");
+			// return false;
+		}
+		return s.source.isPlaying;
 	}
 
 }

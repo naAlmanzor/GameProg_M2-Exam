@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 3975750420219736684}
   - component: {fileID: 2979783880480598440}
   - component: {fileID: 6217308963930589163}
+  - component: {fileID: 5270052837708196265}
   m_Layer: 0
   m_Name: Refelctive Door
-  m_TagString: Untagged
+  m_TagString: Key Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,3 +98,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.9711587, y: 1, z: 1}
   m_Center: {x: -0.040382158, y: 0, z: 0}
+--- !u!114 &5270052837708196265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2719848509749358595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9afa1ac7f63ec3c49a80d9c71381b0bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
