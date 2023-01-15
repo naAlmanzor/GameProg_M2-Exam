@@ -141,7 +141,7 @@ MonoBehaviour:
   sensitivty: 2.5
   jump: 5
   hp: 100
-  damage: 1
+  damage: 25
   interval: 0.5
 --- !u!136 &2177073006100395105
 CapsuleCollider:
