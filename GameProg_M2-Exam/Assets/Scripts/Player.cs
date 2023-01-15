@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     private float _yaw, _pitch;
     private bool _equipped, _collidingObstacle = false;
     private float _coins, _sprint = 1f;
-    public float speed = 5f, sprintMultiplier = 1.5f, sensitivty = 10f, jump = 5f, hp = 100f;
+    public float speed = 5f, sprintMultiplier = 1.5f, sensitivty = 10f, jump = 5f, hp = 100f, damage = 1f, interval = 0.5f;
 
     private void Start() {
         Cursor.lockState = CursorLockMode.Locked;
@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
         if(other.gameObject.tag == "Obstacle") {
             // Debug.Log("Collided");
             _collidingObstacle = true;
-            StartCoroutine(Damage(1f, 0.5f));
+            StartCoroutine(Damage(damage, interval));
         }
 
         if(other.gameObject.tag == "Finish") {
