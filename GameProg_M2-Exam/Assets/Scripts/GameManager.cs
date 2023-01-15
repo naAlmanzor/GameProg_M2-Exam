@@ -60,7 +60,9 @@ public class GameManager : MonoBehaviour
     }
 
     private void doSound() {
-        _aud.Stop("theme");
+        if(_aud.isPlaying("theme")) {
+            _aud.Stop("theme");
+        }
         if(_gameState == 2) { _aud.Play("win");}
         if(_gameState == 0) { _aud.Play("lose");}
     }

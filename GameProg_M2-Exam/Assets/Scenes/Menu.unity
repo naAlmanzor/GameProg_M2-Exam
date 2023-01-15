@@ -1718,6 +1718,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _title: {fileID: 0}
   _mgr: {fileID: 611762687}
+  loadTestWorld: 0
 --- !u!1 &1971554233
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,6 +8,7 @@ public class Menu : MonoBehaviour
     [SerializeField] private TMP_Text _title;
     [SerializeField] private GameManager _mgr;
     private AudioManager _aud;
+    public bool loadTestWorld = false;
 
     private void Awake() {
         if(_title != null) {
@@ -40,14 +41,20 @@ public class Menu : MonoBehaviour
 
     public void Retry() {
         _mgr.setGameState(1);
-        // _mgr.LoadScene("TEST WORLD");
-        _mgr.LoadScene("Maze Game");
+        _mgr.setObjectiveState(false);
+        if(loadTestWorld) {
+            _mgr.LoadScene("TEST WORLD");
+        } else {
+            _mgr.LoadScene("Maze Game");
+        }
+        
         doMusic();
         // SceneManager.LoadScene("TEST WORLD", LoadSceneMode.Single);
     }
 
     public void MainMenu() {
         _mgr.setGameState(1);
+        _mgr.setObjectiveState(false);
         _mgr.LoadScene("Menu");
         doMusic();
         // SceneManager.LoadScene("Menu", LoadSceneMode.Single);
