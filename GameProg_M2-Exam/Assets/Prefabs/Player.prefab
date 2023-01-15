@@ -137,9 +137,12 @@ MonoBehaviour:
     m_Bits: 8
   _hand: {fileID: 6070519621839568577}
   speed: 5
+  sprintMultiplier: 1.5
   sensitivty: 2.5
   jump: 5
   hp: 100
+  damage: 1
+  interval: 0.5
 --- !u!136 &2177073006100395105
 CapsuleCollider:
   m_ObjectHideFlags: 0
